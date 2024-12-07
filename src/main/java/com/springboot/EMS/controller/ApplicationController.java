@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.EMS.dto.ApplicantsDetailDto;
 import com.springboot.EMS.model.Application;
 import com.springboot.EMS.service.ApplicationService;
 
@@ -27,5 +28,9 @@ public class ApplicationController {
 		List<Application> application = applicationService.getAllApplication();
 		return application;
 	}
-
+	
+	@GetMapping("/application/getAllCleared")
+	public List<ApplicantsDetailDto> getAllClearedApplications() {
+        return applicationService.getClearedApplications();
+    }
 }

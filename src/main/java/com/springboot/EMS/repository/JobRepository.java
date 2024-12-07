@@ -12,4 +12,6 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
 	@Query("SELECT j FROM Job j " + "JOIN j.hr hr " + "WHERE j.title = :roleName")
 	List<Job> findJobsByRole(@Param("roleName") String roleName);
+
+	List<Job> findByJobType(String job_type);
 }

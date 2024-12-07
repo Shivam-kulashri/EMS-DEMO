@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.springboot.EMS.enums.Role;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

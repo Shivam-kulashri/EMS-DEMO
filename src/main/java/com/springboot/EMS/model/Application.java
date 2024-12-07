@@ -1,6 +1,13 @@
 package com.springboot.EMS.model;
 
-import jakarta.persistence.*;
+import java.util.Date;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Application {
@@ -11,16 +18,23 @@ public class Application {
 
 	private String applicationStatus;
 
-	private String dateApplied;
+	private Date dateApplied;
 
 	@ManyToOne
 	private Job job;
 
 	@ManyToOne
 	private JobSeeker jobSeeker;
-
-	@ManyToOne
-	private InterviewSchedular interviewSchedular;
+	@Lob
+	
+	    private byte[] resume;
+public byte[] getResume() {
+		return resume;
+	}
+	public void setResume(byte[] resume) {
+		this.resume = resume;
+	}
+	
 
 	public int getId() {
 		return id;
@@ -38,12 +52,11 @@ public class Application {
 		this.applicationStatus = applicationStatus;
 	}
 
-	public String getDateApplied() {
+	public Date getDateApplied() {
 		return dateApplied;
 	}
-
-	public void setDateApplied(String dateApplied) {
-		this.dateApplied = dateApplied;
+	public void setDateApplied(Date date) {
+		this.dateApplied = date;
 	}
 
 	public Job getJob() {
@@ -62,12 +75,6 @@ public class Application {
 		this.jobSeeker = jobSeeker;
 	}
 
-	public InterviewSchedular getInterviewSchedular() {
-		return interviewSchedular;
-	}
-
-	public void setInterviewSchedular(InterviewSchedular interviewSchedular) {
-		this.interviewSchedular = interviewSchedular;
-	}
+	
 
 }

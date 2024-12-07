@@ -52,6 +52,7 @@ public class AuthController {
 			String jwt = jwtUtil.generateToken(user.getUsername());
 			dto.setUsername(user.getUsername());
 			dto.setToken(jwt);
+			dto.setUserid(user.getId());
 			return ResponseEntity.ok(dto);
 		} catch (AuthenticationException ae) {
 			return ResponseEntity.badRequest().body(ae.getMessage());

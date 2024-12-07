@@ -50,11 +50,11 @@ public class Hr {
 		this.name = name;
 	}
 
-	public User getLogin() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setLogin(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
