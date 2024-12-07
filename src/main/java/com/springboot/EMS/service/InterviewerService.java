@@ -29,4 +29,8 @@ public class InterviewerService {
 		return interviewerRespository.findAll();
 	}
 
+	public Interviewer addInterviewer(Interviewer interviewer) {
+		return interviewerRespository.save(interviewer);
+	}
+
 }

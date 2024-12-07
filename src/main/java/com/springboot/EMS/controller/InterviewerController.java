@@ -52,6 +52,11 @@ public class InterviewerController {
 		}
 
 	}
+	
+	@PostMapping("/interviewer/add")
+	public Interviewer addInterviewer(@RequestBody Interviewer interviewer) {
+		return interviewerService.addInterviewer(interviewer);
+	}
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateInterview(@PathVariable int id, @RequestBody InterviewSchedular newInterview,
