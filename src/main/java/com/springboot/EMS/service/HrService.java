@@ -48,7 +48,8 @@ public class HrService {
             dto.setEmail((String) row[1]);
             dto.setWorkExperience((String) row[2]);
             dto.setJobTitle((String) row[3]);
-            dto.setApplicationStatus((String) row[4]);
+            dto.setApplicationId((int) row[4]);
+            dto.setApplicationStatus((String) row[5]);
             applicantsDetails.add(dto);
         }
 

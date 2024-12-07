@@ -9,6 +9,7 @@ public class ApplicantsDetailDto {
     private String workExperience;
     private String jobTitle;
     private String applicationStatus;
+    private int applicationId;
 	public String getJobSeekerName() {
 		return jobSeekerName;
 	}
@@ -39,5 +40,12 @@ public class ApplicantsDetailDto {
 	public void setApplicationStatus(String applicationStatus) {
 		this.applicationStatus = applicationStatus;
 	}
+	public int getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(int applicationId) {
+		this.applicationId = applicationId;
+	}
+	
     
 }
