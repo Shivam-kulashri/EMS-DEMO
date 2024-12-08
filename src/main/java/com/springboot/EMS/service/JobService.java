@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.EMS.exception.IDnotfoundException;
@@ -60,6 +62,10 @@ public Job insert(Job job) {
 	public Job getJobsByid(int id) throws IDnotfoundException {
 		return jobRepository.findById(id).orElseThrow(() -> new IDnotfoundException("Job not found with ID:"+id));
 
+	}
+
+	public Page<Job> getAllPageJobs(Pageable pageable) {
+		return jobRepository.findAll(pageable);
 	}
 
 }

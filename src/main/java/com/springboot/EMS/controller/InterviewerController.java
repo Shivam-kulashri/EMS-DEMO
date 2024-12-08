@@ -19,8 +19,6 @@ import com.springboot.EMS.model.InterviewSchedular;
 import com.springboot.EMS.model.Interviewer;
 import com.springboot.EMS.service.InterviewSchedularService;
 import com.springboot.EMS.service.InterviewerService;
-
-import jakarta.websocket.server.PathParam;
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 public class InterviewerController {

@@ -3,6 +3,9 @@ package com.springboot.EMS.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.springboot.EMS.dto.ResponseMessageDto;
 import com.springboot.EMS.exception.IDnotfoundException;
@@ -38,11 +40,27 @@ public class JobController {
 		List<Job> job = jobService.getAllJob();
 		return job;
 	}
-	
+
+	@GetMapping("/jobs/pagable/all")
+	public Page<Job> getAllPageJobs(
+			@RequestParam(required = false, defaultValue = "0") String page, 
+			@RequestParam(required = false, defaultValue = "1000000") String size) throws Exception{
+				Pageable pageable = null; 
+				try {
+					pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size));
+				}
+				catch(Exception e) {
+					throw e;
+				}
+				Page<Job> list = jobService.getAllPageJobs(pageable);
+				return list;
+	}
+
 	@PostMapping("/job/add")
 	public Job addJob(@RequestBody Job job) {
 		return jobService.addJob(job);
 	}
+
 	@DeleteMapping("/job/delete/{id}")
 	public ResponseEntity<?> deleteJob(@PathVariable int id, ResponseMessageDto dto) {
 		try {
@@ -51,59 +69,62 @@ public class JobController {
 		} catch (ResourceNotFoundException e) {
 			dto.setMsg(e.getMessage());
 			return ResponseEntity.badRequest().body(dto);
-		} 
+		}
 		dto.setMsg("Job deleted");
 		return ResponseEntity.ok(dto);
-		
+
 	}
+
 	@GetMapping("/job/type/get")
 	public ResponseEntity<?> getJobsByType(@RequestParam String job_type) {
-	    try {
-	        List<Job> list = jobService.getJobsByType(job_type);
-	        return ResponseEntity.ok(list);
-	    } catch (IllegalArgumentException e) {
-	        return ResponseEntity.badRequest().body(e.getMessage());
-	    }
+		try {
+			List<Job> list = jobService.getJobsByType(job_type);
+			return ResponseEntity.ok(list);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
-	// search by job id
-			@GetMapping("/getJobsbyid/{jobid}")
-			public ResponseEntity<Job> getJobsbyid(@PathVariable int jobid) throws IDnotfoundException {
-				Job job = jobService.getJobsByid(jobid);
-				
-				return new ResponseEntity<>(job, HttpStatus.OK);
-			}
-			@PutMapping("/job/update/{id}")
-		    public ResponseEntity<?> updateJob(@PathVariable int id, @RequestBody Job newJob, ResponseMessageDto dto) {
-		        try {
-		            Job existingJobDb = jobService.validate(id);
-		            
-		            if (newJob.getTitle() != null)
-		                existingJobDb.setTitle(newJob.getTitle());
-		            if (newJob.getDescription() != null)
-		                existingJobDb.setDescription(newJob.getDescription());
-		            if (newJob.getLocation() != null)
-		                existingJobDb.setLocation(newJob.getLocation());
-		            if (newJob.getQualifications() != null)
-		                existingJobDb.setQualifications(newJob.getQualifications());
-		            if (newJob.getExperienceRequired() != null)
-		                existingJobDb.setExperienceRequired(newJob.getExperienceRequired());
-		            
-		            if (newJob.getJobType() != null)
-		                existingJobDb.setJobType(newJob.getJobType());
-		            if (newJob.getSalaryRange() != null)
-		                existingJobDb.setSalaryRange(newJob.getSalaryRange());
-		            if (newJob.getApplicationDeadline() != null)
-		                existingJobDb.setApplicationDeadline(newJob.getApplicationDeadline());
-		            if (newJob.getDatePosted() != null)
-		                existingJobDb.setDatePosted(newJob.getDatePosted());
 
-		            // Re-save the existing job with new values
-		            existingJobDb = jobService.insert(existingJobDb);
-		            return ResponseEntity.ok(existingJobDb);
-		        } catch (ResourceNotFoundException e) {
-		            dto.setMsg(e.getMessage());
-		            return ResponseEntity.badRequest().body(dto);
-		        }
-		    }
+	// search by job id
+	@GetMapping("/getJobsbyid/{jobid}")
+	public ResponseEntity<Job> getJobsbyid(@PathVariable int jobid) throws IDnotfoundException {
+		Job job = jobService.getJobsByid(jobid);
+
+		return new ResponseEntity<>(job, HttpStatus.OK);
+	}
+
+	@PutMapping("/job/update/{id}")
+	public ResponseEntity<?> updateJob(@PathVariable int id, @RequestBody Job newJob, ResponseMessageDto dto) {
+		try {
+			Job existingJobDb = jobService.validate(id);
+
+			if (newJob.getTitle() != null)
+				existingJobDb.setTitle(newJob.getTitle());
+			if (newJob.getDescription() != null)
+				existingJobDb.setDescription(newJob.getDescription());
+			if (newJob.getLocation() != null)
+				existingJobDb.setLocation(newJob.getLocation());
+			if (newJob.getQualifications() != null)
+				existingJobDb.setQualifications(newJob.getQualifications());
+			if (newJob.getExperienceRequired() != null)
+				existingJobDb.setExperienceRequired(newJob.getExperienceRequired());
+
+			if (newJob.getJobType() != null)
+				existingJobDb.setJobType(newJob.getJobType());
+			if (newJob.getSalaryRange() != null)
+				existingJobDb.setSalaryRange(newJob.getSalaryRange());
+			if (newJob.getApplicationDeadline() != null)
+				existingJobDb.setApplicationDeadline(newJob.getApplicationDeadline());
+			if (newJob.getDatePosted() != null)
+				existingJobDb.setDatePosted(newJob.getDatePosted());
+
+			// Re-save the existing job with new values
+			existingJobDb = jobService.insert(existingJobDb);
+			return ResponseEntity.ok(existingJobDb);
+		} catch (ResourceNotFoundException e) {
+			dto.setMsg(e.getMessage());
+			return ResponseEntity.badRequest().body(dto);
+		}
+	}
 
 }
