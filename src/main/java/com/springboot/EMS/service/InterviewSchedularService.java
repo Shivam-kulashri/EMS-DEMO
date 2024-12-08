@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.springboot.EMS.exception.ResourceNotFoundException;
@@ -39,5 +40,13 @@ public class InterviewSchedularService {
 
 	public List<InterviewSchedular> getAllInterview() {
 		return interviewSchedularRepository.findAll();
+	}
+
+	public ResponseEntity<List<InterviewSchedular>> seeAllInterviewById(int id) throws ResourceNotFoundException{
+		Optional<List<InterviewSchedular>> optional = interviewSchedularRepository.findInterviewAllById(id);
+		if(optional.isEmpty())
+			throw new ResourceNotFoundException("No Interview Found!");
+		List<InterviewSchedular> list = optional.get();
+		return ResponseEntity.ok(list);
 	}
 }

@@ -1,6 +1,7 @@
 package com.springboot.EMS.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +14,9 @@ public interface InterviewSchedularRepository extends JpaRepository<InterviewSch
 
 	@Query("SELECT DISTINCT i.interviewer FROM InterviewSchedular i WHERE i.interviewDate = :date")
 	List<Interviewer> findInterviewersByScheduleDate(@Param("date") String date);
+	
+	@Query("SELECT i FROM InterviewSchedular i "
+			+ "WHERE i.interviewer.id =?1")
+	Optional<List<InterviewSchedular>> findInterviewAllById(int id);
 
 }

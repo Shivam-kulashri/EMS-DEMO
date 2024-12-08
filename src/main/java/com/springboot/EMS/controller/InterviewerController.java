@@ -19,6 +19,8 @@ import com.springboot.EMS.model.InterviewSchedular;
 import com.springboot.EMS.model.Interviewer;
 import com.springboot.EMS.service.InterviewSchedularService;
 import com.springboot.EMS.service.InterviewerService;
+
+import jakarta.websocket.server.PathParam;
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 public class InterviewerController {
@@ -31,7 +33,18 @@ public class InterviewerController {
 	public List<Interviewer> addInterviewerBatch(@RequestBody List<Interviewer> list) {
 		return interviewerService.insertInBatch(list);
 	}
-
+	
+	@GetMapping("interview/{id}")
+	public ResponseEntity<?>  getInterviewById(@PathVariable int id,ResponseMessageDto dto){
+		try {
+			InterviewSchedular interview = interviewSchedularService.validate(id);
+			return ResponseEntity.ok(interview);
+	} catch(ResourceNotFoundException e) {
+		dto.setMsg(e.getMessage());
+		return ResponseEntity.badRequest().body(dto);
+	}
+	}
+	
 	@PostMapping("/scheduleinterview")
 	public ResponseEntity<?> scheduleInterview(@RequestBody List<InterviewSchedular> list, ResponseMessageDto dto) {
 		try {
@@ -92,7 +105,12 @@ public class InterviewerController {
 	public List<Interviewer> getInterviewersByScheduleDate(@RequestParam String date) {
 		return interviewSchedularService.getInterviewersByScheduleDate(date);
 	}
-
+	
+	@GetMapping("/interviewers/{id}")
+	public ResponseEntity<List<InterviewSchedular>> seeAllInterviewById(@RequestParam int id) throws ResourceNotFoundException{
+		return interviewSchedularService.seeAllInterviewById(id);
+	}
+	
 	@GetMapping("/interviewers/all")
 	public List<Interviewer> getAllInterviewer() {
 		List<Interviewer> interviewer = interviewerService.getAllInterviewer();
